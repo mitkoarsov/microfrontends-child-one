@@ -2,6 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import federation from "@originjs/vite-plugin-federation";
 
+const isProd: boolean = process.env.REACT_APP_IS_PROD === "true";
+const parentUrl: string = isProd
+  ? "https://mitkoarsov.github.io/microfrontends-parent/assets/remoteEntry.js"
+  : "http://localhost:5173/assets/remoteEntry.js";
+
 export default defineConfig({
   plugins: [
     federation({
@@ -9,8 +14,7 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: { "./App": "./src/App.tsx" },
       remotes: {
-        shell:
-          "https://mitkoarsov.github.io/microfrontends-parent/assets/remoteEntry.js",
+        shell: parentUrl,
       },
       shared: [
         "react",
